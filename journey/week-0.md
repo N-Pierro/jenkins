@@ -57,7 +57,7 @@ To check the jenkins status
 ```sh
 sudo systemctl status jenkins
 ```
-You should see a display like this if all was successful [This shows an ok status of jenkins](/journey/screenshots/Screenshots/image.md/ok_status.png)
+You should see a display like this if all was successful [This shows an ok status of jenkins](/journey/screenshots/Screenshots/image.md)
 
 
 

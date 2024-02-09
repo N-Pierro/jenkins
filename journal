@@ -1,1 +1,9 @@
 # Jenkins Installation and configuration 
+
+Launch an ec2 install, for this task use RedHat linux server
+
+### Install the following commands, `wget unzip tree git`
+
+```sh 
+sudo yum install -y wget unzip tree git 
+```

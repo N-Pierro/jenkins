@@ -46,9 +46,18 @@ sudo systemctl daemon-reload
 
 In summary, these commands prepare the system for installing Jenkins by adding the Jenkins repository, importing the GPG key, and ensuring that all installed packages are up-to-date. After executing these commands, you can proceed with installing Jenkins using `yum`.
 
+## Start Jenkins
 
+```sh
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+```
+To check the jenkins status 
 
-
+```sh
+sudo systemctl status jenkins
+```
+You should see a display like this if all was successful [This shows an ok status of jenkins](/journey/screenshots/)
 
 
 

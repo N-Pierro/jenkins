@@ -59,8 +59,21 @@ sudo systemctl status jenkins
 ```
 You should see a display like this if all was successful [This shows an ok status of jenkins](/journey/screenshots/Screenshots/image.md)
 
+Run the command to get the public-ip of the instance
 
+```sh
+curl ifconfig.me
+```
+copy this ip and add 8080 ex `public-ip:8080` 
 
+8080 comes by default, in case this a different port was used, replace the port number with it
+
+## copy initial admin Password 
+
+```sh
+sudo cat /var/lib/jenkins/secretes/initialAdminPassword
+``
+copy this password and past on the jenkins loging page 
 
 
 

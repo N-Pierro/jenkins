@@ -73,7 +73,9 @@ copy this ip and add 8080 ex `public-ip:8080`
 ```sh
 sudo cat /var/lib/jenkins/secretes/initialAdminPassword
 ``
-copy this password and past on the jenkins loging page 
+copy this password and past on the jenkins loging page
+```
+
 
 
 

@@ -213,4 +213,27 @@ what the above command does
 - exec; used to execute command in a container
 - nexus is the name of the contianer where we intend to execute a command
 - /nexus-data/admin.password; is the path in the container where the initial password is stored
+
+When trying to upload artifacts to jenkins the job fails because of unauthorized access
+
+to archieve this vi into the */settings.xml file in jenkins 
+
+```sh
+vi tools/hudson.tasks.Maven_MavenInstallation/maven3.9.6/conf/settings.xml
+```
+- look for the servers tag
+- add the following before the servers closing tag
+
+ ```sh
+    <server>
+      <id>nexus</id>
+      <username>admin</username>
+      <password>passwordForNexus</password>
+    </server>
+```
+- save and exit
+
+
+
+
   

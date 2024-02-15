@@ -92,3 +92,95 @@ Environment="JENKINS_PORT=8081"
 
 ```
 Here, "8081" was chosen but you can put another port available.
+
+
+
+# Docker-Jenkins installation script
+
+```sh
+#!/bin/bash
+
+set -e  # Exit immediately if a command fails
+
+# Check if script is run with root privileges
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Error: This script must be run with root privileges."
+    exit 1
+fi
+
+# Update hostname (optional)
+# sudo hostnamectl set-hostname docker
+
+# Install Docker
+sudo apt update
+sudo apt install docker.io -y
+
+# Add current user to docker group
+if ! sudo usermod -aG docker ubuntu; then
+    echo "Error: Failed to add user 'ubuntu' to the 'docker' group."
+    exit 1
+fi
+
+# Install Java (dependency for Jenkins)
+sudo apt install fontconfig openjdk-17-jre
+
+# Add Jenkins repository and install Jenkins
+if ! sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key; then
+    echo "Error: Failed to add Jenkins repository key."
+    exit 1
+fi
+
+if ! sudo sh -c 'echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null'; then
+    echo "Error: Failed to add Jenkins repository to sources list."
+    exit 1
+fi
+
+sudo apt-get update
+
+if ! sudo apt install jenkins -y; then
+    echo "Error: Failed to install Jenkins."
+    exit 1
+fi
+
+# Enable Jenkins service to start at reboot
+if ! sudo systemctl enable jenkins; then
+    echo "Error: Failed to start Jenkins service."
+    exit 1
+fi
+
+# Start Jenkins service
+if ! sudo systemctl start jenkins; then
+    echo "Error: Failed to start Jenkins service."
+    exit 1
+fi
+
+# Grant specific sudo permissions to Jenkins (if needed)
+echo "jenkins  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/jenkins
+
+# Change Jenkins user password
+if ! echo "jenkins:admin" | sudo chpasswd; then
+    echo "Error: Failed to change Jenkins user password."
+    exit 1
+fi
+
+# Enable password authentication for SSH
+if ! sudo sed -i "/^[^#]*PasswordAuthentication[[:space:]]no/c\PasswordAuthentication yes" /etc/ssh/sshd_config; then
+    echo "Error: Failed to enable password authentication for SSH."
+    exit 1
+fi
+
+if ! sudo systemctl restart ssh; then
+    echo "Error: Failed to restart SSH service."
+    exit 1
+fi
+
+# Add Jenkins user to docker group (if needed)
+sudo usermod -aG docker jenkins
+
+# Additional steps...
+```
+
+

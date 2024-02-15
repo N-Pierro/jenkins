@@ -182,5 +182,35 @@ sudo usermod -aG docker jenkins
 
 # Additional steps...
 ```
+## Jenkins-docker server instegration with other toos
 
+Intergration with sonarqubue
 
+run the command 
+
+To create a sonaqube container
+
+```sh
+docker run --name sonar -d -p 5000:9000 sonaqube
+```
+the above command does the following 
+
+- creates a sonaqube container named sonar using a sonaqube image from docker repo
+- associates the sonarqube port(9000) with the server(docker-jenkins server) port (5000) FOR PORT FORWARDING
+
+To create a nexus container
+
+```sh
+docker run -d -p 5500:8081 --name nexus sonatype/nexus3
+```
+execute command in nexus container to get the initial password
+
+```sh
+docker exec nexus cat /nexus-data/admin.password
+```
+what the above command does
+
+- exec; used to execute command in a container
+- nexus is the name of the contianer where we intend to execute a command
+- /nexus-data/admin.password; is the path in the container where the initial password is stored
+  
